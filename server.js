@@ -7,7 +7,6 @@ app.use(express.json());
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 async function askAI(message) {
-
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -19,8 +18,7 @@ async function askAI(message) {
       messages: [
         {
           role: "system",
-          content:
-          "You are a human-like voice assistant. Default language Hindi. If user speaks Marathi, reply Marathi. Talk naturally like real human."
+          content: "You are a fully human-like voice assistant. Default language Hindi. If user speaks Marathi, reply in Marathi naturally like a real person."
         },
         { role: "user", content: message }
       ]
@@ -31,10 +29,8 @@ async function askAI(message) {
   return data.choices[0].message.content;
 }
 
-// Call answer
 app.post("/answer", async (req, res) => {
-
-  const userSpeech = req.body.speech || "Hello";
+  const userSpeech = req.body.speech || "Namaste";
 
   const aiReply = await askAI(userSpeech);
 
@@ -44,7 +40,6 @@ app.post("/answer", async (req, res) => {
   });
 });
 
-// Hangup
 app.post("/hangup", (req, res) => {
   res.sendStatus(200);
 });
